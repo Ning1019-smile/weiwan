@@ -1,0 +1,21 @@
+{
+  "color": [
+    { "name": "start_window_background", "value": "#FFFFFF" },
+    { "name": "page_bg", "value": "#F5F6F7" },
+    { "name": "card_bg", "value": "#FFFFFF" },
+    { "name": "text_primary", "value": "#1A1C1F" },
+    { "name": "text_secondary", "value": "#7A7E87" },
+    { "name": "text_tertiary", "value": "#9AA0A6" },
+    { "name": "text_disabled", "value": "#C6C9CE" },
+    { "name": "input_bg", "value": "#F1F2F4" },
+    { "name": "divider", "value": "#EDEEF0" },
+    { "name": "brand", "value": "#5B33B8" },
+    { "name": "brand_chip_bg", "value": "#F0EBFA" },
+    { "name": "exam_chip_bg", "value": "#FDEBEC" },
+    { "name": "urgency_overdue", "value": "#E5484D" },
+    { "name": "urgency_today", "value": "#F08233" },
+    { "name": "urgency_tomorrow", "value": "#D9A413" },
+    { "name": "urgency_week", "value": "#4C7DF0" },
+    { "name": "urgency_later", "value": "#9AA0A6" }
+  ]
+}

@@ -1,0 +1,23 @@
+# build output
+/node_modules
+/oh_modules
+/local.properties
+/.idea
+**/build
+/.hv
+/.clangd
+/.clang-format
+/.clang-tidy
+**/.test
+/.appanalyzer
+*.hap
+*.hsp
+*.log
+.DS_Store
+/.hvigor/
+/.trae-html-share-packages/
+
+# 签名材料不入库（build-profile 中的 signingConfigs 块已在提交前剔除）
+*.cer
+*.p7b
+*.p12

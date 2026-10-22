@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品需求文档 · DemoSchedule（暂定名）</title>
+<style>
+  :root {
+    --bg: #F6F7F9;
+    --paper: #FFFFFF;
+    --text: #1B1F24;
+    --muted: #5F6B7A;
+    --border: #E3E7EC;
+    --brand: #0B8457;
+    --brand-soft: #E6F5EE;
+    --brand-text: #0A5C3D;
+    --p0: #0B8457;
+    --p1: #1A73E8;
+    --p2: #8A94A6;
+    --danger: #D93025;
+    --warn: #E8710A;
+    --soon: #B7791F;
+    --info: #1A73E8;
+    --tag-bg: #EEF1F4;
+    --assume-bg: #FFF7E0;
+    --assume-bd: #EAD48A;
+    --tbd-bg: #FDECEA;
+    --tbd-tx: #B3261E;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 400 15px/1.75 -apple-system, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 80px; }
+  .paper {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 40px 48px;
+  }
+  @media (max-width: 640px) { .paper { padding: 24px 18px; } }
+
+  h1 { font-size: 26px; line-height: 1.4; margin: 0 0 6px; }
+  .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  h2 {
+    font-size: 20px; margin: 44px 0 14px; padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  h2:first-of-type { border-top: none; padding-top: 0; }
+  h3 { font-size: 16.5px; margin: 30px 0 10px; }
+  h4 { font-size: 15px; margin: 20px 0 8px; }
+  p { margin: 8px 0; }
+  ul, ol { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13.5px; }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: #F3F6F4; font-weight: 600; white-space: nowrap; }
+  td { line-height: 1.65; }
+  .tbl-scroll { overflow-x: auto; }
+
+  code { background: var(--tag-bg); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+  .fr-id { font-weight: 600; color: var(--brand-text); white-space: nowrap; }
+  .pill {
+    display: inline-block; padding: 0 8px; border-radius: 999px;
+    font-size: 12px; line-height: 20px; font-weight: 600; white-space: nowrap;
+  }
+  .p0 { background: var(--brand-soft); color: var(--p0); }
+  .p1 { background: #E8F0FE; color: var(--p1); }
+  .p2 { background: var(--tag-bg); color: var(--p2); }
+  .assume {
+    background: var(--assume-bg); border: 1px solid var(--assume-bd);
+    border-radius: 4px; padding: 0 6px; font-size: 12.5px; white-space: nowrap;
+  }
+  .tbd {
+    background: var(--tbd-bg); color: var(--tbd-tx);
+    border-radius: 4px; padding: 0 6px; font-size: 12.5px; font-weight: 600; white-space: nowrap;
+  }
+  .callout {
+    background: var(--brand-soft); border-left: 3px solid var(--brand);
+    border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 14px 0; font-size: 14px;
+  }
+  .note { color: var(--muted); font-size: 13px; }
+
+  /* 目录 */
+  .toc {
+    background: #FAFBFC; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 20px; font-size: 14px; margin: 20px 0;
+  }
+  .toc a { color: var(--text); text-decoration: none; margin-right: 4px; }
+  .toc a:hover { color: var(--brand); }
+  .toc li { margin: 2px 0; }
+
+  /* 紧迫度徽章 */
+  .urg { display: inline-block; padding: 0 8px; border-radius: 4px; color: #fff; font-size: 12px; line-height: 20px; font-weight: 600; }
+  .u-overdue { background: var(--danger); }
+  .u-today { background: var(--warn); }
+  .u-soon { background: var(--soon); }
+  .u-week { background: var(--info); }
+  .u-later { background: #8A94A6; }
+
+  /* 状态图 */
+  .fig { text-align: center; margin: 18px 0; }
+  .fig svg { max-width: 100%; height: auto; }
+  .figcap { color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+  /* ============ 手机原型 ============ */
+  .proto-area { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; margin: 18px 0; }
+  .proto-note { flex: 1 1 320px; min-width: 280px; font-size: 14px; }
+  .proto-note h4 { margin-top: 0; }
+  .proto-note .frmap { font-size: 13px; color: var(--muted); }
+  .proto-note .frmap b { color: var(--brand-text); }
+
+  .phone {
+    flex: 0 0 380px; width: 380px; height: 780px;
+    background: #101214; border-radius: 40px; padding: 10px;
+    box-shadow: 0 12px 32px rgba(0,0,0,.14);
+  }
+  .screen {
+    position: relative; width: 100%; height: 100%;
+    background: #F7F8FA; border-radius: 32px; overflow: hidden;
+    display: flex; flex-direction: column;
+    font-size: 14px;
+  }
+  .statusbar {
+    flex: 0 0 auto; display: flex; justify-content: space-between;
+    padding: 10px 18px 4px; font-size: 12px; color: #31363C; font-weight: 600;
+  }
+  .d-body { flex: 1 1 auto; overflow-y: auto; padding: 8px 14px 90px; }
+  .d-body::-webkit-scrollbar { width: 0; }
+
+  .d-h1 { font-size: 19px; font-weight: 700; margin: 6px 2px 10px; }
+
+  .card {
+    background: #fff; border: 1px solid #ECEEF1; border-radius: 12px;
+    padding: 12px 14px; margin: 8px 0;
+  }
+  .count-card {
+    background: linear-gradient(135deg, #0B8457, #0E9A66);
+    color: #fff; border: none;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .count-card .t { font-size: 13px; opacity: .92; }
+  .count-card .n { font-size: 24px; font-weight: 700; }
+  .count-card .n small { font-size: 12px; font-weight: 400; opacity: .85; margin-left: 2px; }
+
+  .sec-title { font-size: 12.5px; color: #7A8593; font-weight: 600; margin: 14px 4px 4px; display:flex; align-items:center; gap:8px; }
+  .sec-title .cnt { background: #ECEEF1; color: #5F6B7A; border-radius: 999px; padding: 0 7px; font-size: 11px; }
+
+  .task {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: #fff; border: 1px solid #ECEEF1; border-radius: 12px;
+    padding: 11px 12px; margin: 6px 0;
+  }
+  .ck {
+    flex: 0 0 auto; width: 20px; height: 20px; margin-top: 1px;
+    border: 2px solid #B9C2CC; border-radius: 6px; cursor: pointer;
+    background: #fff; transition: all .12s ease;
+  }
+  .task.done .ck { background: var(--brand); border-color: var(--brand); position: relative; }
+  .task.done .ck::after {
+    content: ""; position: absolute; left: 5px; top: 1px;
+    width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+  }
+  .task .t-main { flex: 1 1 auto; min-width: 0; }
+  .task .t-title { font-weight: 500; word-break: break-all; }
+  .task.done .t-title { color: #9AA4B0; text-decoration: line-through; }
+  .task .t-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .chip { font-size: 11px; line-height: 18px; padding: 0 7px; border-radius: 5px; background: #F0F2F5; color: #5F6B7A; white-space: nowrap; }
+  .chip.type-作业 { background: #E8F0FE; color: #1A73E8; }
+  .chip.type-考试 { background: #FDECEA; color: #B3261E; }
+  .chip.pri-高 { background: #FDECEA; color: #B3261E; }
+  .chip.pri-中 { background: #FFF3E0; color: #B26A00; }
+  .chip.urg-overdue { background: #FDECEA; color: #B3261E; font-weight: 600; }
+  .chip.urg-today { background: #FFF3E0; color: #B26A00; font-weight: 600; }
+  .btn-mini {
+    flex: 0 0 auto; align-self: center; border: 1px solid #D8DEE5; background: #fff; color: #31363C;
+    font-size: 12px; border-radius: 8px; padding: 3px 9px; cursor: pointer;
+  }
+  .btn-mini:hover { border-color: var(--brand); color: var(--brand); }
+
+  .quickadd { display: flex; gap: 8px; margin: 12px 0 4px; }
+  .quickadd input {
+    flex: 1; border: 1px solid #DDE2E8; border-radius: 10px; padding: 9px 12px; font-size: 14px; background: #fff;
+  }
+  .quickadd button {
+    border: none; background: var(--brand); color: #fff; border-radius: 10px; padding: 0 16px; font-size: 14px; cursor: pointer;
+  }
+  .hint { color: #9AA4B0; font-size: 12px; margin: 6px 4px; }
+
+  details.done-wrap { margin-top: 10px; }
+  details.done-wrap summary { cursor: pointer; color: #7A8593; font-size: 12.5px; font-weight: 600; }
+
+  /* tab bar */
+  .tabbar {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 74px;
+    background: #fff; border-top: 1px solid #ECEEF1;
+    display: flex; justify-content: space-around; align-items: stretch;
+    padding-bottom: 12px;
+  }
+  .tab {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; cursor: pointer; color: #8A94A6; font-size: 11px; user-select: none;
+  }
+  .tab .ico { font-size: 19px; line-height: 1; }
+  .tab.active { color: var(--brand); font-weight: 600; }
+  .tab-add {
+    flex: 0 0 74px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .tab-add .plus {
+    width: 48px; height: 48px; border-radius: 50%; background: var(--brand); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 300;
+    box-shadow: 0 4px 10px rgba(11,132,87,.35); margin-top: -18px;
+  }
+
+  /* 新建面板 */
+  .add-panel {
+    position: absolute; inset: 0; background: #F7F8FA; z-index: 30;
+    transform: translateY(102%); transition: transform .22s ease;
+    display: flex; flex-direction: column;
+  }
+  .add-panel.open { transform: translateY(0); }
+  .add-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px 6px; }
+  .add-head b { font-size: 16px; }
+  .add-head .close { cursor: pointer; color: #8A94A6; font-size: 13px; }
+  .add-form { padding: 6px 18px 20px; overflow-y: auto; flex: 1; }
+  .f-row { margin: 10px 0; }
+  .f-row label { display: block; font-size: 12.5px; color: #5F6B7A; margin-bottom: 4px; font-weight: 600; }
+  .f-row input[type=text], .f-row input[type=date], .f-row select {
+    width: 100%; border: 1px solid #DDE2E8; border-radius: 10px; padding: 9px 11px; font-size: 14px; background: #fff;
+  }
+  .f-err { color: #B3261E; font-size: 12px; margin-top: 4px; display: none; }
+  .f-save { width: 100%; border: none; background: var(--brand); color: #fff; border-radius: 12px; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 12px; }
+  .f-grid { display: flex; gap: 10px; }
+  .f-grid .f-row { flex: 1; }
+
+  .course-card { display: flex; justify-content: space-between; align-items: center; }
+  .course-card .c-name { font-weight: 600; }
+  .course-card .c-sub { color: #8A94A6; font-size: 12px; margin-top: 2px; }
+  .course-card .c-num { text-align: center; }
+  .course-card .c-num b { font-size: 18px; color: var(--brand); display: block; }
+  .course-card .c-num span { font-size: 11px; color: #8A94A6; }
+
+  .set-row { display: flex; justify-content: space-between; align-items: center; }
+  .set-row .s-label b { font-weight: 600; display: block; }
+  .set-row .s-label span { font-size: 12px; color: #8A94A6; }
+  .switch { position: relative; width: 46px; height: 26px; flex: 0 0 auto; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .track {
+    position: absolute; inset: 0; background: #CBD2DA; border-radius: 999px; transition: background .15s; cursor: pointer;
+  }
+  .switch .track::before {
+    content: ""; position: absolute; width: 20px; height: 20px; border-radius: 50%;
+    background: #fff; top: 3px; left: 3px; transition: transform .15s; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  }
+  .switch input:checked + .track { background: var(--brand); }
+  .switch input:checked + .track::before { transform: translateX(20px); }
+  .set-row select { border: 1px solid #DDE2E8; border-radius: 8px; padding: 5px 8px; font-size: 13px; background: #fff; }
+  .badge-p1 { font-size: 10.5px; background: #E8F0FE; color: #1A73E8; border-radius: 4px; padding: 0 5px; margin-left: 6px; vertical-align: 1px; }
+
+  .toast {
+    position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%) translateY(8px);
+    background: rgba(28,32,36,.92); color: #fff; font-size: 13px;
+    padding: 8px 16px; border-radius: 999px; opacity: 0; pointer-events: none;
+    transition: all .18s ease; z-index: 50; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .empty {
+    text-align: center; color: #9AA4B0; font-size: 13px; padding: 26px 0 10px;
+  }
+  .empty .big { font-size: 30px; display: block; margin-bottom: 6px; }
+
+  /* 学生模式关闭态 */
+  .no-student .student-only { display: none !important; }
+
+  footer.doc-foot { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12.5px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="paper">
+
+  <h1>产品需求文档 · 未晚</h1>
+  <div class="subtitle">大学生任务管理单机 App（HarmonyOS）</div>
+
+  <table>
+    <tr><th style="width:90px">文档版本</th><td>v0.2 草案（待评审）</td><th style="width:90px">更新日期</th><td>2026-10-22</td></tr>
+    <tr><th>产品名称</th><td><b>未晚</b>（工程代号 DemoSchedule，寓意"此刻记下，为时未晚"）</td><th>目标平台</th><td>HarmonyOS（手机，单机版）</td></tr>
+    <tr><th>文档作者</th><td><span class="tbd">TBD</span></td><th>评审人</th><td><span class="tbd">TBD</span></td></tr>
+  </table>
+
+  <div class="toc">
+    <b>目录</b>
+    <ol>
+      <li><a href="#bg">背景与目标</a></li>
+      <li><a href="#contract">产品定位与产品契约</a></li>
+      <li><a href="#scope">版本范围（P0 / P1 / P2）</a></li>
+      <li><a href="#model">对象模型与任务状态</a></li>
+      <li><a href="#fr">功能需求</a>（M1 任务管理 / M2 视图 / M3 学生模式 / M4 提醒 / M5 桌面卡片 / M6 统计 / M7 数据管理）</li>
+      <li><a href="#rules">共享规则</a></li>
+      <li><a href="#open">待定问题</a></li>
+    </ol>
+  </div>
+
+  <!-- ================= 1 背景与目标 ================= -->
+  <h2 id="bg">1. 背景与目标</h2>
+  <p><b>观察到的问题：</b>大学生的待办事项来源分散——教务系统、课程群、老师口头布置、社团与生活事务。任务以"截止时间（DDL）"驱动，一旦漏记或遗忘，就会出现赶工、迟交、漏考等问题。现有通用待办工具对"课程、学期、考试"等校园概念支持薄弱，而多数在线工具要求账号登录、依赖网络。</p>
+  <p><b>产品响应：</b>做一个<b>单机、免登录、数据全部本地</b>的任务管理 App，默认面向大学生的任务结构（作业、考试、课程表、学期）深度建模，同时允许关闭学生模式作为通用任务清单使用。</p>
+  <p><b>可观察的目标：</b></p>
+  <ul>
+    <li><b>G1 录入快：</b>从打开输入到保存一条带截止时间的任务，不超过 3 次点击 / 约 3 秒。</li>
+    <li><b>G2 打开即清晰：</b>启动 App 或查看桌面卡片，无需任何操作即可看到"今天要做什么"与"最近一次考试 / DDL 倒计时"。</li>
+    <li><b>G3 不漏 DDL：</b>任何设置了截止时间的任务，默认都会在截止前触发一次本地提醒。</li>
+    <li><b>G4 离线可用：</b>飞行模式下全部核心功能可用，数据不丢失。</li>
+  </ul>
+
+  <!-- ================= 2 产品契约 ================= -->
+  <h2 id="contract">2. 产品定位与产品契约</h2>
+  <table>
+    <tr><th style="width:130px">项</th><th>定义</th></tr>
+    <tr><td>首要用户</td><td>大学生（本科 / 研究生），任务围绕课程、作业、考试与校园生活组织</td></tr>
+    <tr><td>次要用户</td><td>关闭学生模式后的通用用户（职场人士等），使用普通的任务清单能力</td></tr>
+    <tr><td>触发时刻</td><td>接到新任务（布置作业 / 约定事务）时记录；规划一天 / 一周时查看；担心遗漏 DDL 时核对</td></tr>
+    <tr><td>核心工作</td><td>记录任务 → 按紧迫度组织 → 截止前提醒 → 完成并归档</td></tr>
+    <tr><td>完成标志</td><td>任务被勾选完成并进入"已完成"归档；DDL 前用户收到过提醒；用户可在任意视图找到任何未完成任务</td></tr>
+    <tr><td>共享业务对象</td><td><b>任务（Task）</b>，可绑定课程（Course），课程归属学期（Term）</td></tr>
+    <tr><td>信任原则</td><td>无账号、无联网、无广告；数据只存本机；提供导出备份作为丢失恢复手段</td></tr>
+    <tr><td>学生模式定位</td><td><b>深度集成</b>：课程 / 学期 / 考试是一等对象，任务体系原生围绕它们组织；模式开关只隐藏入口、不删除数据（见 <a href="#r4">规则 R4</a>）</td></tr>
+  </table>
+
+  <!-- ================= 3 范围 ================= -->
+  <h2 id="scope">3. 版本范围（P0 / P1 / P2）</h2>
+  <h3>3.1 最小完整旅程（P0）</h3>
+  <ul>
+    <li><b>入口条件：</b>安装后打开即用，无注册登录。</li>
+    <li><b>P0 动作：</b>创建学期与课程（学生模式）→ 录入任务（可设类型、课程、DDL）→ 在今日聚焦 / 列表查看 → DDL 前收到本地提醒 → 勾选完成。</li>
+    <li><b>完成证据：</b>"今天"页面展示逾期 / 今日任务与最近考试倒计时；完成后任务进入"已完成"分区。</li>
+    <li><b>关键恢复路径：</b>删除任务需二次确认；已逾期任务可一键"改期到今天"。</li>
+  </ul>
+  <h3>3.2 版本划分</h3>
+  <div class="tbl-scroll">
+  <table>
+    <tr><th>优先级</th><th>内容</th><th>对应需求</th></tr>
+    <tr>
+      <td><span class="pill p0">P0</span></td>
+      <td>任务增删改查与完成、今日聚焦、列表视图、DDL 紧迫度排序、学生模式开关、学期与课程管理、作业 / 考试类型与倒计时、本地通知提醒、本地存储</td>
+      <td>FR-01 ~ FR-07、FR-11 ~ FR-19、FR-25</td>
+    </tr>
+    <tr>
+      <td><span class="pill p1">P1</span></td>
+      <td>日历 / 四象限 / 看板视图、课程表周视图（含单双周）、重复任务、桌面服务卡片、备份导出导入、最近删除（30 天可恢复）</td>
+      <td>FR-08 ~ FR-10、FR-15、FR-20 ~ FR-21、FR-26 ~ FR-27</td>
+    </tr>
+    <tr>
+      <td><span class="pill p2">P2</span></td>
+      <td>完成统计与热力图、连续打卡、番茄钟、深色模式</td>
+      <td>FR-22 ~ FR-24、FR-28</td>
+    </tr>
+  </table>
+  </div>
+  <h3>3.3 明确排除（本期不做）</h3>
+  <ul>
+    <li>云同步、多设备同步、账号体系；</li>
+    <li>任务协作、分享、社交功能；</li>
+    <li>商业化（广告 / 内购）；</li>
+    <li>iOS / Android 跨端版本。</li>
+  </ul>
+
+  <!-- ================= 4 对象模型 ================= -->
+  <h2 id="model">4. 对象模型与任务状态</h2>
+  <h3>4.1 任务（Task）</h3>
+  <table>
+    <tr><th style="width:110px">字段</th><th style="width:70px">必填</th><th>说明与取值</th></tr>
+    <tr><td>标题</td><td>必填</td><td>≤ 50 字，纯文本</td></tr>
+    <tr><td>类型</td><td>必填</td><td>普通 / 作业 / 考试 / 事务，默认"普通"。作业与考试为学生模式语义类型</td></tr>
+    <tr><td>课程</td><td>选填</td><td>学生模式开启时可选；绑定后可在课程详情聚合查看</td></tr>
+    <tr><td>截止时间</td><td>选填</td><td>精度为"日期"或"日期 + 时间"；仅日期时视为当天 <code>23:59</code>（见 <a href="#r3">规则 R3</a>）</td></tr>
+    <tr><td>优先级</td><td>选填</td><td>无 / 低 / 中 / 高，默认"无"</td></tr>
+    <tr><td>备注</td><td>选填</td><td>纯文本长备注</td></tr>
+    <tr><td>提醒</td><td>选填</td><td>默认继承全局提前量（见 <a href="#r5">规则 R5</a>），可按任务覆盖</td></tr>
+    <tr><td>重复</td><td>选填</td><td>P1：每天 / 每周 / 自定义间隔；完成后自动生成下一期</td></tr>
+    <tr><td>状态</td><td>系统</td><td>待办 / 已完成 / 已逾期（派生状态，见 4.4）</td></tr>
+    <tr><td>创建 / 完成时间</td><td>系统</td><td>自动记录，用于排序与统计</td></tr>
+  </table>
+  <h3>4.2 课程（Course）</h3>
+  <table>
+    <tr><th style="width:110px">字段</th><th style="width:70px">必填</th><th>说明与取值</th></tr>
+    <tr><td>课程名</td><td>必填</td><td>如"高等数学"</td></tr>
+    <tr><td>教师</td><td>选填</td><td>文本</td></tr>
+    <tr><td>地点</td><td>选填</td><td>文本</td></tr>
+    <tr><td>上课时间</td><td>选填</td><td>周几 + 节次，可多条；单双周设置为 P1（<span class="assume">[假设] 单双周属 P1</span>）</td></tr>
+    <tr><td>所属学期</td><td>必填</td><td>关联当前学期</td></tr>
+  </table>
+  <h3>4.3 学期（Term）</h3>
+  <table>
+    <tr><th style="width:110px">字段</th><th style="width:70px">必填</th><th>说明与取值</th></tr>
+    <tr><td>学期名</td><td>必填</td><td>如"2026 秋季学期"</td></tr>
+    <tr><td>起止日期</td><td>必填</td><td>开始日期 < 结束日期；同一时间有且仅有一个"当前学期"</td></tr>
+  </table>
+  <p class="note">历史学期与课程数据保留，可查看其关联的任务归档；<span class="assume">[假设] 不提供学期归档的编辑入口之外的特殊处理</span>。</p>
+
+  <h3 id="s44">4.4 任务状态图</h3>
+  <div class="fig">
+    <svg viewBox="0 0 720 250" width="640" role="img" aria-label="任务状态图：待办、已完成、已逾期三个状态及转换">
+      <defs>
+        <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M1 1 L7 4 L1 7 Z" fill="#5F6B7A"/>
+        </marker>
+        <marker id="arrB" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M1 1 L7 4 L1 7 Z" fill="#0B8457"/>
+        </marker>
+      </defs>
+      <!-- 待办 -->
+      <rect x="60" y="95" width="130" height="56" rx="12" fill="#E6F5EE" stroke="#0B8457" stroke-width="1.5"/>
+      <text x="125" y="129" text-anchor="middle" font-size="15" font-weight="600" fill="#0A5C3D">待办</text>
+      <!-- 已完成 -->
+      <rect x="300" y="40" width="130" height="56" rx="12" fill="#F3F6F4" stroke="#C9D3CC" stroke-width="1.5"/>
+      <text x="365" y="74" text-anchor="middle" font-size="15" font-weight="600" fill="#3E4A44">已完成</text>
+      <!-- 已逾期 -->
+      <rect x="300" y="155" width="130" height="56" rx="12" fill="#FDECEA" stroke="#D93025" stroke-width="1.5"/>
+      <text x="365" y="189" text-anchor="middle" font-size="15" font-weight="600" fill="#B3261E">已逾期</text>
+      <!-- 归档说明 -->
+      <rect x="530" y="40" width="150" height="56" rx="12" fill="#FFFFFF" stroke="#C9D3CC" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="605" y="66" text-anchor="middle" font-size="13" fill="#5F6B7A">已完成归档</text>
+      <text x="605" y="86" text-anchor="middle" font-size="12" fill="#8A94A6">可撤销，不参与排序</text>
+      <!-- 待办 → 已完成 -->
+      <path d="M165 108 Q232 90 296 72" fill="none" stroke="#0B8457" stroke-width="1.6" marker-end="url(#arrB)"/>
+      <text x="228" y="74" text-anchor="middle" font-size="12" fill="#0A5C3D">勾选完成</text>
+      <!-- 已完成 → 待办（撤销） -->
+      <path d="M318 96 Q232 118 194 118" fill="none" stroke="#5F6B7A" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+      <text x="250" y="126" text-anchor="middle" font-size="12" fill="#5F6B7A">撤销完成</text>
+      <!-- 待办 → 已逾期 -->
+      <path d="M165 138 Q232 162 296 178" fill="none" stroke="#D93025" stroke-width="1.6" marker-end="url(#arr)"/>
+      <text x="228" y="172" text-anchor="middle" font-size="12" fill="#B3261E">过 DDL 自动（R3）</text>
+      <!-- 已逾期 → 待办 -->
+      <path d="M318 155 Q232 136 194 128" fill="none" stroke="#5F6B7A" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+      <text x="243" y="148" text-anchor="middle" font-size="12" fill="#5F6B7A">改期</text>
+      <!-- 已逾期 → 已完成 -->
+      <path d="M400 155 Q400 122 388 99" fill="none" stroke="#5F6B7A" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+      <text x="430" y="130" text-anchor="middle" font-size="12" fill="#5F6B7A">补完成</text>
+      <!-- 已完成 → 归档 -->
+      <path d="M430 68 H526" fill="none" stroke="#5F6B7A" stroke-width="1.4" marker-end="url(#arr)"/>
+      <text x="478" y="60" text-anchor="middle" font-size="12" fill="#5F6B7A">自动</text>
+    </svg>
+    <div class="figcap">图 1 · 任务状态转换。"已逾期"为派生状态，由共享规则 R3 在每日 0 点 / 打开应用时结算，不是用户直接设置的状态。</div>
+  </div>
+
+  <!-- ================= 5 功能需求 ================= -->
+  <h2 id="fr">5. 功能需求</h2>
+
+  <!-- ========== M1 ========== -->
+  <h3>5.1 M1 任务管理 <span class="pill p0">P0</span></h3>
+  <p><b>目的：</b>让用户以最低成本记录、维护任务，是所有视图与提醒的数据基础。</p>
+  <div class="tbl-scroll">
+  <table>
+    <tr><th style="width:64px">ID</th><th style="width:110px">能力</th><th style="width:190px">用户与触发</th><th>产品行为</th><th style="width:240px">规则与状态</th></tr>
+    <tr>
+      <td class="fr-id">FR-01</td><td>快速录入</td>
+      <td>任何用户；点击首页 / 列表页底部"＋"或首页快捷输入框</td>
+      <td>打开新建面板：标题默认聚焦；提供"今天 / 明天 / 本周末"快捷日期片；可展开设置类型、课程、截止时间、优先级、提醒、备注。保存后任务进入"待办"，并出现在对应视图</td>
+      <td>标题必填 ≤ 50 字，为空时保存按钮置灰并提示；仅填标题即可保存（DDL 等均可空）；保存后展示轻提示"已添加"</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-02</td><td>查看与编辑</td>
+      <td>任何用户；点击任意任务行</td>
+      <td>进入任务详情：展示全部字段与状态；点击字段直接进入编辑，保存即时生效</td>
+      <td>已完成任务亦可编辑备注 / 补充信息；编辑 DDL 会按新值重新计算提醒与紧迫度</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-03</td><td>完成与撤销</td>
+      <td>任何用户；点击任务行左侧勾选框</td>
+      <td>勾选 → 状态变"已完成"，记录完成时间，取消其未触发的提醒，任务移入"已完成"分区；再次点击勾选框可撤销回"待办"</td>
+      <td>完成 / 撤销即时生效并同步所有视图与桌面卡片；重复任务完成后按 P1 重复规则生成下一期</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-04</td><td>删除</td>
+      <td>任何用户；在列表左滑任务行或详情页点"删除"</td>
+      <td>弹出确认框（含任务标题），确认后删除</td>
+      <td>P0：确认即删除，提示"可在设置中开启删除前备份"（P1 生效）；P1：删除进入"最近删除"保留 30 天（FR-27）</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-05</td><td>逾期改期</td>
+      <td>任何用户；任务进入"已逾期"后在行内或详情页操作</td>
+      <td>提供"改期到今天 / 明天"快捷按钮，以及自选日期；改期后回到"待办"并重设提醒</td>
+      <td>已逾期任务在所有视图中置顶显示（排序见 <a href="#r2">R2</a>）</td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- ========== M2 ========== -->
+  <h3>5.2 M2 视图 <span class="pill p0">P0</span> <span class="pill p1">P1</span></h3>
+  <p><b>目的：</b>同一份任务数据提供多种组织视角；P0 只做"今日聚焦 + 列表"，其余视角 P1 迭代。</p>
+  <div class="tbl-scroll">
+  <table>
+    <tr><th style="width:64px">ID</th><th style="width:110px">能力</th><th style="width:190px">用户与触发</th><th>产品行为</th><th style="width:240px">规则与状态</th></tr>
+    <tr>
+      <td class="fr-id">FR-06</td><td>今日聚焦（首页）</td>
+      <td>任何用户；启动 App 或切到"今日"页签</td>
+      <td>自上而下：① 学生模式开启时显示<b>最近考试倒计时卡</b>（见 FR-14）；② "已逾期"区（可改期）；③ "今天"任务列表；④ 顶部快捷输入框（输入标题回车即建"今天截止"的任务）</td>
+      <td>今日无任务时显示空态："今天没有安排，添加第一件事 →"；逾期区为空则不显示该区</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-07</td><td>列表视图</td>
+      <td>任何用户；切到"任务"页签</td>
+      <td>按紧迫度分区展示全部未完成任务：已逾期 / 今天 / 未来 7 天 / 更晚 / 无日期；底部"已完成"折叠区可展开查看与撤销</td>
+      <td>分区内排序遵循 <a href="#r2">R2</a>；每区标题显示数量徽标；空区不显示</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-08</td><td>日历视图 <span class="pill p1">P1</span></td>
+      <td>任何用户；切到"日历"页签</td>
+      <td>月历，有任务的日期显示数量角标；点选日期展示当日任务并可添加</td>
+      <td>逾期任务集中显示在"今天"格子，不散落在历史日期</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-09</td><td>四象限视图 <span class="pill p1">P1</span></td>
+      <td>任何用户；切到"四象限"页签</td>
+      <td>重要 / 紧急二维矩阵展示未完成任务，点按任务在象限间移动（联动优先级与 DDL）</td>
+      <td>"重要"= 优先级高；"紧急"= 3 天内截止（映射规则见 <a href="#r1">R1</a>）</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-10</td><td>看板视图 <span class="pill p1">P1</span></td>
+      <td>任何用户；切到"看板"页签</td>
+      <td>待办 / 进行中 / 已完成 三列，横向滑动，卡片拖拽改状态</td>
+      <td>"进行中"为 P1 新增的显式状态；P0 数据升级时旧任务默认归入"待办"</td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- ===== 交互原型 ===== -->
+  <h4>P0 交互原型（FR-01 / 03 / 05 / 06 / 07 / 11 / 14 / 16 演示）</h4>
+  <p class="note">下方原型演示 P0 核心交互与状态，数据为示例，不代表最终视觉稿。可实际操作：切换页签、勾选完成 / 撤销、逾期改期、新建任务、切换学生模式。</p>
+  <div class="proto-area">
+
+    <div class="phone" id="phone">
+      <div class="screen" id="screen">
+        <div class="statusbar"><span>9:41</span><span>5G ▪▪▪ 🔋</span></div>
+
+        <div class="d-body">
+          <!-- 今日 -->
+          <section id="d-view-today">
+            <div class="d-h1">今天 <span class="note" id="d-date-label"></span></div>
+            <div class="card count-card student-only" id="d-count-card">
+              <div><div class="t">下一场考试</div><div style="font-size:15px;font-weight:600" id="d-exam-name">—</div></div>
+              <div class="n" id="d-exam-days">—<small>天</small></div>
+            </div>
+            <div id="d-today-overdue"></div>
+            <div class="sec-title">今日任务 <span class="cnt" id="d-today-cnt">0</span></div>
+            <div id="d-today-list"></div>
+            <div class="quickadd">
+              <input type="text" id="d-quick-input" placeholder="记一件事，回车保存（默认今天截止）" maxlength="50">
+              <button id="d-quick-btn">添加</button>
+            </div>
+            <div class="hint">快捷添加的任务默认"今天"截止、"普通"类型，可在详情中修改。</div>
+          </section>
+
+          <!-- 任务列表 -->
+          <section id="d-view-tasks" style="display:none">
+            <div class="d-h1">全部任务</div>
+            <div id="d-task-sections"></div>
+            <details class="done-wrap">
+              <summary>已完成（<span id="d-done-cnt">0</span>）· 点击展开</summary>
+              <div id="d-done-list"></div>
+            </details>
+          </section>
+
+          <!-- 课程 -->
+          <section id="d-view-courses" style="display:none">
+            <div class="d-h1">课程 <span class="note">2026 秋季学期</span></div>
+            <div id="d-course-list"></div>
+            <div class="hint">点击课程可查看该课程全部任务；课程表周视图为 P1（FR-15）。此处仅演示数据聚合。</div>
+          </section>
+
+          <!-- 我的 -->
+          <section id="d-view-me" style="display:none">
+            <div class="d-h1">我的</div>
+            <div class="card set-row">
+              <div class="s-label"><b>学生模式</b><span>开启后显示课程、学期与考试倒计时；关闭只隐藏入口，数据保留</span></div>
+              <label class="switch"><input type="checkbox" id="d-mode-toggle" checked><span class="track"></span></label>
+            </div>
+            <div class="card set-row">
+              <div class="s-label"><b>默认提醒提前量</b><span>新建任务的默认提醒（R5）</span></div>
+              <select id="d-remind-sel">
+                <option>截止前 30 分钟</option>
+                <option selected>截止前 1 天</option>
+                <option>截止前 2 天</option>
+              </select>
+            </div>
+            <div class="card set-row">
+              <div class="s-label"><b>备份与恢复<span class="badge-p1">P1</span></b><span>导出备份文件 / 从文件导入（FR-26）</span></div>
+              <button class="btn-mini" disabled style="opacity:.5">敬请期待</button>
+            </div>
+            <div class="card set-row">
+              <div class="s-label"><b>数据存储</b><span>全部数据仅保存在本机，无账号、不联网（FR-25）</span></div>
+              <span class="chip">本地</span>
+            </div>
+          </section>
+        </div>
+
+        <!-- tab bar -->
+        <div class="tabbar">
+          <div class="tab active" data-view="d-view-today"><span class="ico">☀️</span>今日</div>
+          <div class="tab" data-view="d-view-tasks"><span class="ico">☰</span>任务</div>
+          <div class="tab-add" id="d-open-add"><div class="plus">＋</div></div>
+          <div class="tab student-only" data-view="d-view-courses" id="d-tab-courses"><span class="ico">📚</span>课程</div>
+          <div class="tab" data-view="d-view-me"><span class="ico">⚙️</span>我的</div>
+        </div>
+
+        <!-- 新建面板 -->
+        <div class="add-panel" id="d-add-panel">
+          <div class="add-head"><b>新建任务</b><span class="close" id="d-close-add">取消</span></div>
+          <div class="add-form">
+            <div class="f-row">
+              <label>标题（必填）</label>
+              <input type="text" id="d-f-title" maxlength="50" placeholder="例如：完成数据结构实验报告">
+              <div class="f-err" id="d-f-err">标题不能为空</div>
+            </div>
+            <div class="f-grid">
+              <div class="f-row">
+                <label>类型</label>
+                <select id="d-f-type">
+                  <option>普通</option><option>作业</option><option>考试</option><option>事务</option>
+                </select>
+              </div>
+              <div class="f-row">
+                <label>优先级</label>
+                <select id="d-f-pri"><option>无</option><option>低</option><option>中</option><option>高</option></select>
+              </div>
+            </div>
+            <div class="f-grid">
+              <div class="f-row">
+                <label>截止日期</label>
+                <input type="date" id="d-f-ddl">
+              </div>
+              <div class="f-row student-only" id="d-f-course-row">
+                <label>课程（可选）</label>
+                <select id="d-f-course"></select>
+              </div>
+            </div>
+            <button class="f-save" id="d-f-save">保存</button>
+          </div>
+        </div>
+
+        <div class="toast" id="d-toast"></div>
+      </div>
+    </div>
+
+    <div class="proto-note">
+      <h4>原型覆盖的场景</h4>
+      <ul>
+        <li><b class="fr-id">FR-06</b> 今日聚焦：倒计时卡 → 已逾期区 → 今日任务 → 快捷输入；空态表现可勾完所有今日任务后观察。</li>
+        <li><b class="fr-id">FR-07</b> 列表分区：已逾期 / 今天 / 未来 7 天 / 更晚 / 无日期 / 已完成折叠区。</li>
+        <li><b class="fr-id">FR-01</b> 快速录入：点"＋"新建；标题为空时提示不可保存；选"作业 / 考试"并绑课程后，课程页计数与考试倒计时即时更新。</li>
+        <li><b class="fr-id">FR-03</b> 完成 / 撤销：勾选后移入已完成，撤销即回待办。</li>
+        <li><b class="fr-id">FR-05</b> 逾期改期：逾期行内"改期到今天"。</li>
+        <li><b class="fr-id">FR-14</b> 考试倒计时：取最近一场未结束考试，≤ 7 天高亮规则见需求正文。</li>
+        <li><b class="fr-id">FR-16</b> 学生模式开关（R4）：关闭后"课程"页签、倒计时卡、新建面板课程字段全部隐藏，重新打开即恢复。</li>
+      </ul>
+      <p class="frmap">紧迫度徽章配色与 <b>规则 R1</b> 一致：<span class="urg u-overdue">已逾期</span> <span class="urg u-today">今天</span> <span class="urg u-soon">3 天内</span> <span class="urg u-week">本周内</span> <span class="urg u-later">更晚</span></p>
+    </div>
+  </div>
+
+  <!-- ========== M3 ========== -->
+  <h3>5.3 M3 学生模式 <span class="pill p0">P0</span> <span class="pill p1">P1</span></h3>
+  <p><b>目的：</b>把"学期 — 课程 — 作业 / 考试"建模为一等对象，让校园任务的录入与查找天然贴合学生场景；这是本产品与通用待办工具的核心差异。</p>
+  <div class="tbl-scroll">
+  <table>
+    <tr><th style="width:64px">ID</th><th style="width:110px">能力</th><th style="width:190px">用户与触发</th><th>产品行为</th><th style="width:240px">规则与状态</th></tr>
+    <tr>
+      <td class="fr-id">FR-11</td><td>学期管理</td>
+      <td>学生用户；首次开启学生模式，或"我的 → 学期设置"</td>
+      <td>创建学期（名称 + 起止日期），可创建多个；当前日期落在起止区间内的学期为"当前学期"，无匹配时取结束日期最晚的未来学期</td>
+      <td>开启学生模式但无学期时，引导页要求先建一个学期才能继续；学期可编辑、删除（删除需确认，且仅允许删除非当前学期）</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-12</td><td>课程管理</td>
+      <td>学生用户；"课程"页 → 新建 / 编辑课程</td>
+      <td>维护课程（名称必填，教师 / 地点 / 上课时间选填），课程归属当前学期</td>
+      <td>删除课程需确认：其关联任务不删除，仅解除绑定（类型保留）；<span class="assume">[假设] 不提供跨学期复制课程</span></td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-13</td><td>任务绑定课程</td>
+      <td>学生用户；新建 / 编辑类型为"作业 / 考试"的任务时</td>
+      <td>可从当前学期课程中选择绑定；课程详情页聚合展示该课程全部任务（未完成在前）</td>
+      <td>"普通 / 事务"类型不提供课程字段；学生模式关闭时字段隐藏、已绑定关系保留（R4）</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-14</td><td>考试倒计时</td>
+      <td>学生用户；存在类型为"考试"且截止日期在未来的任务时</td>
+      <td>首页顶部显示倒计时卡：取最近一场考试，显示"距《考试名》还有 N 天"；同日多场时显示全部并按课程名排列</td>
+      <td>N ≤ 7 时卡片转为强调色；考试日当天显示"今天开考"；<span class="assume">[假设] 已过期的考试任务不再展示，进入已完成 / 逾期归档</span></td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-15</td><td>课程表周视图 <span class="pill p1">P1</span></td>
+      <td>学生用户；"课程"页切换"课表"模式</td>
+      <td>按周展示课程格（周几 × 节次）；点课程格查看课程任务；提供"给这门课布置作业"快捷入口（预填课程字段的 FR-01）</td>
+      <td>支持单双周标记；非当前周显示周次导航</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-16</td><td>学生模式开关</td>
+      <td>任何用户；"我的 → 学生模式"</td>
+      <td>开关切换即时生效：关闭后隐藏课程页签、倒计时卡、课程 / 学期入口与任务上的课程徽标；开启后全部恢复</td>
+      <td>统一行为见 <a href="#r4">R4</a>；不删除、不改写任何数据</td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- ========== M4 ========== -->
+  <h3>5.4 M4 提醒 <span class="pill p0">P0</span></h3>
+  <p><b>目的：</b>在正确的时间把 DDL 推到用户面前（目标 G3），全部基于系统本地通知，不依赖网络。</p>
+  <div class="tbl-scroll">
+  <table>
+    <tr><th style="width:64px">ID</th><th style="width:110px">能力</th><th style="width:190px">用户与触发</th><th>产品行为</th><th style="width:240px">规则与状态</th></tr>
+    <tr>
+      <td class="fr-id">FR-17</td><td>DDL 提醒</td>
+      <td>任何用户；任务设置了截止时间</td>
+      <td>按任务提醒设置（默认继承 R5）在截止前通过系统通知提醒；通知点击后直达该任务详情</td>
+      <td>仅日期（无时刻）的 DDL，提醒时刻为截止日前一天 20:00（R3）；<span class="assume">[假设] 默认提前量取"截止前 1 天"</span></td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-18</td><td>提醒生命周期</td>
+      <td>系统；任务完成 / 删除 / 改期 / 编辑时</td>
+      <td>完成与删除 → 取消全部未触发提醒；改期 / 编辑 DDL → 撤销旧提醒并按新值重设</td>
+      <td>提醒与任务状态严格一致，不允许出现"任务已完成仍收到提醒"</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-19</td><td>通知权限</td>
+      <td>任何用户；首次保存带提醒的任务时</td>
+      <td>请求系统通知权限；拒绝后不阻塞流程，任务详情显示"提醒未开启"角标，"我的"页常驻开启指引入口</td>
+      <td>权限被拒期间创建的提醒设置保留，授权后自动补注册</td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- ========== M5 ========== -->
+  <h3>5.5 M5 桌面服务卡片 <span class="pill p1">P1</span></h3>
+  <p><b>目的：</b>不打开 App 即可掌握今日任务与最近 DDL（目标 G2），是鸿蒙平台的差异化体验。</p>
+  <div class="tbl-scroll">
+  <table>
+    <tr><th style="width:64px">ID</th><th style="width:110px">能力</th><th style="width:190px">用户与触发</th><th>产品行为</th><th style="width:240px">规则与状态</th></tr>
+    <tr>
+      <td class="fr-id">FR-20</td><td>卡片规格</td>
+      <td>任何用户；长按桌面图标添加卡片</td>
+      <td>2×2：今日任务数 + 最近一条 DDL；2×4：今日任务前 3 条 + 考试倒计时（学生模式开启时）</td>
+      <td>卡片内容与 App 内"今日聚焦"同源；点击卡片直达对应任务或今日页</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-21</td><td>卡片刷新</td>
+      <td>系统；任务数据变化或跨日时</td>
+      <td>任务增删改、完成 / 撤销后即时刷新卡片；每日 0 点按 R3 重新结算展示</td>
+      <td>无网络依赖；数据不变时不无谓刷新</td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- ========== M6 ========== -->
+  <h3>5.6 M6 效率统计 <span class="pill p2">P2</span></h3>
+  <div class="tbl-scroll">
+  <table>
+    <tr><th style="width:64px">ID</th><th style="width:110px">能力</th><th>产品行为</th></tr>
+    <tr><td class="fr-id">FR-22</td><td>完成统计</td><td>按日 / 周展示完成任务数量与完成率，仅统计有完成时间的任务</td></tr>
+    <tr><td class="fr-id">FR-23</td><td>打卡与热力图</td><td>连续完成天数；近 12 周完成热力图</td></tr>
+    <tr><td class="fr-id">FR-24</td><td>番茄钟</td><td>从任务详情发起 25 / 5 分钟专注计时，专注时长计入该任务；锁屏中断的处理规则 <span class="tbd">TBD</span></td></tr>
+  </table>
+  </div>
+
+  <!-- ========== M7 ========== -->
+  <h3>5.7 M7 数据管理 <span class="pill p0">P0</span> <span class="pill p1">P1</span></h3>
+  <div class="tbl-scroll">
+  <table>
+    <tr><th style="width:64px">ID</th><th style="width:110px">能力</th><th style="width:190px">用户与触发</th><th>产品行为</th><th style="width:240px">规则与状态</th></tr>
+    <tr>
+      <td class="fr-id">FR-25</td><td>本地存储</td>
+      <td>系统；始终</td>
+      <td>全部数据仅存储于设备本地，无账号、不联网；断网时全功能可用（G4）</td>
+      <td>卸载应用即清除数据；首次进入时以一次性提示告知，并提供"了解备份"入口</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-26</td><td>备份导出 / 导入 <span class="pill p1">P1</span></td>
+      <td>任何用户；"我的 → 备份与恢复"</td>
+      <td>导出：生成单个备份文件，由用户选择保存位置；导入：选择备份文件，展示摘要（任务数、学期数），确认后恢复</td>
+      <td>导入为整体覆盖，覆盖前强制确认且提示"当前数据将被替换"；导入失败时本地数据不变</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-27</td><td>最近删除 <span class="pill p1">P1</span></td>
+      <td>任何用户；"我的 → 最近删除"</td>
+      <td>被删除任务进入最近删除，保留 30 天，可单条恢复或彻底删除，到期自动清除</td>
+      <td>恢复后状态按删除前重算（可能因 DDL 已过而直接为"已逾期"）</td>
+    </tr>
+    <tr>
+      <td class="fr-id">FR-28</td><td>深色模式 <span class="pill p2">P2</span></td><td colspan="3">跟随系统深浅色；<span class="assume">[假设] 不提供独立主题商店</span></td></tr>
+  </table>
+  </div>
+
+  <!-- ================= 6 共享规则 ================= -->
+  <h2 id="rules">6. 共享规则</h2>
+
+  <h3 id="r1">R1 · 紧迫度分级</h3>
+  <p>所有视图、卡片、排序共用同一套紧迫度定义（按未完成任务的 DDL 计算）：</p>
+  <table>
+    <tr><th>级别</th><th>定义</th><th>展示色</th></tr>
+    <tr><td><span class="urg u-overdue">已逾期</span></td><td>当前时间已过 DDL 且未完成</td><td>红</td></tr>
+    <tr><td><span class="urg u-today">今天</span></td><td>DDL 为今天</td><td>橙</td></tr>
+    <tr><td><span class="urg u-soon">3 天内</span></td><td>DDL 在明天 ~ 3 天内</td><td>黄褐</td></tr>
+    <tr><td><span class="urg u-week">本周内</span></td><td>DDL 在 4 ~ 7 天内</td><td>蓝</td></tr>
+    <tr><td><span class="urg u-later">更晚 / 无日期</span></td><td>DDL 在 7 天以外，或未设置 DDL</td><td>灰</td></tr>
+  </table>
+  <p class="note">说明：列表视图的"未来 7 天"分区由"3 天内 + 本周内"合并展示，徽章仍按 R1 上色。</p>
+
+  <h3 id="r2">R2 · 排序规则</h3>
+  <ul>
+    <li>分区顺序固定：已逾期 → 今天 → 未来 7 天 → 更晚 → 无日期；已完成始终置底折叠。</li>
+    <li>分区内：DDL 升序 → 优先级降序（高 > 中 > 低 > 无）→ 创建时间升序。</li>
+    <li>已逾期任务在"今日聚焦"置顶于今日任务之前。</li>
+  </ul>
+
+  <h3 id="r3">R3 · 逾期结算</h3>
+  <ul>
+    <li>结算时机：每日 0 点系统结算一次；应用从后台返回前台时补算一次。</li>
+    <li>带时刻的 DDL 以该时刻判定；仅日期的 DDL 以当天 <code>23:59</code> 判定。</li>
+    <li>结算只影响"未完成"任务；已完成任务不因时间流逝改变状态。</li>
+  </ul>
+
+  <h3 id="r4">R4 · 学生模式开关的统一行为</h3>
+  <ul>
+    <li>关闭 = 仅隐藏入口与展示：课程页签、学期 / 课程设置入口、考试倒计时卡、任务行上的课程徽标、新建面板的课程字段。</li>
+    <li>任务数据、课程数据、学期数据全部保留；已绑定课程的任务在关闭模式下正常显示（只是不显示课程名）。</li>
+    <li>开启 = 全部入口与展示恢复；不触发任何数据迁移。</li>
+  </ul>
+
+  <h3 id="r5">R5 · 提醒默认值</h3>
+  <ul>
+    <li>全局默认提前量：<span class="assume">[假设] 截止前 1 天（仅日期 DDL 时为前一天 20:00）</span>，可在"我的"中修改（30 分钟 / 2 小时 / 1 天 / 2 天）。</li>
+    <li>新任务默认继承全局值；单任务可覆盖，覆盖后与全局值解耦。</li>
+    <li>修改全局默认值只影响之后新建的任务，不回溯已存在任务。</li>
+  </ul>
+
+  <h3>R6 · 空状态</h3>
+  <p>每个视图定义空态引导：今日 / 列表为"添加第一件事"；课程为"创建第一门课"；统计为"完成第一个任务后这里会有数据"。空态均带一个主操作按钮。</p>
+
+  <!-- ================= 7 待定问题 ================= -->
+  <h2 id="open">7. 待定问题</h2>
+  <table>
+    <tr><th style="width:64px">编号</th><th>问题</th><th style="width:170px">影响</th><th style="width:110px">状态</th></tr>
+    <tr><td>Q1</td><td><b>已确认：未晚。</b>图标采用黄昏地平线方向（概念稿 <code>brand/icon-weiwan-v3.jpg</code>：紫橙渐变黄昏 + 半沉太阳 + 月亮绿星，寓意"天未黑透，为时未晚"），后续按鸿蒙分层图标规范出正式设计。重名检查：应用商店内未发现同名待办 / 日程类应用；存在少量同名企业（非软件品类），上架前建议补一次第 9 / 42 类商标查询</td><td>品牌、应用市场上架信息</td><td><span class="pill p0">已确认</span></td></tr>
+    <tr><td>Q2</td><td><b>已确认：上架华为应用市场。</b>发布前需准备：软件著作权登记证书（或按平台要求提供相应材料）、《隐私政策》（本应用不联网、不收集个人信息，声明可从简）、工信部 App 备案、应用市场审核材料（简介、截图、分类、标签）</td><td>发布计划与 FR-26 备份文件的合规表述；通知权限申请文案需符合应用市场审核规范</td><td><span class="pill p0">已确认</span></td></tr>
+  </table>
+  <p class="note">其余未决细节已在正文以 <span class="assume">[假设]</span> 标注，评审时可一并确认。</p>
+
+  <footer class="doc-foot">未晚 · 产品需求文档 v0.2 · 2026-10-22 · 内部评审用</footer>
+</div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('phone');
+  if (!root) return;
+  function $(sel) { return root.querySelector(sel); }
+  function $all(sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  // ---------- 日期工具 ----------
+  function fmt(d) {
+    var p = function (n) { return String(n).padStart(2, '0'); };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
+  function addDays(n) { var d = new Date(); d.setDate(d.getDate() + n); return fmt(d); }
+  var TODAY = fmt(new Date());
+  var WEEK = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  $('#d-date-label').textContent =
+    '· ' + (new Date().getMonth() + 1) + '月' + new Date().getDate() + '日 ' + WEEK[new Date().getDay()];
+
+  // ---------- 示例数据 ----------
+  var courses = [
+    { name: '高等数学', teacher: '王老师', room: '教一 302' },
+    { name: '数据结构', teacher: '李老师', room: '实验楼 505' },
+    { name: '大学英语', teacher: '张老师', room: '外语楼 201' }
+  ];
+  var seq = 100;
+  var tasks = [
+    { id: 1, title: '提交高数作业第 5 章', type: '作业', course: '高等数学', ddl: addDays(-1), pri: '高', done: false },
+    { id: 2, title: '完成数据结构实验报告', type: '作业', course: '数据结构', ddl: TODAY, pri: '高', done: false },
+    { id: 3, title: '背 50 个六级单词', type: '事务', course: '', ddl: TODAY, pri: '低', done: false },
+    { id: 4, title: '小组会议纪要整理', type: '事务', course: '', ddl: addDays(2), pri: '中', done: false },
+    { id: 5, title: '阅读操作系统第 3 章', type: '普通', course: '', ddl: addDays(5), pri: '无', done: false },
+    { id: 6, title: '预约图书馆座位', type: '事务', course: '', ddl: '', pri: '无', done: false },
+    { id: 7, title: '高等数学期末考试', type: '考试', course: '高等数学', ddl: addDays(12), pri: '高', done: false },
+    { id: 8, title: '大学英语四级', type: '考试', course: '大学英语', ddl: addDays(30), pri: '高', done: false },
+    { id: 9, title: '买生活用品', type: '事务', course: '', ddl: addDays(-2), pri: '低', done: true }
+  ];
+
+  // ---------- 紧迫度（R1）----------
+  function urgency(t) {
+    if (t.done) return 'done';
+    if (!t.ddl) return 'none';
+    if (t.ddl < TODAY) return 'overdue';
+    if (t.ddl === TODAY) return 'today';
+    if (t.ddl <= addDays(3)) return 'soon';
+    if (t.ddl <= addDays(7)) return 'week';
+    return 'later';
+  }
+  var URGLABEL = { overdue: '已逾期', today: '今天', soon: '3 天内', week: '本周内', later: '更晚' };
+  var PRI = { '高': 3, '中': 2, '低': 1, '无': 0 };
+  function byR2(a, b) { // R2：DDL 升序 → 优先级降序 → 创建时间升序
+    if (a.ddl !== b.ddl) return a.ddl < b.ddl ? -1 : 1;
+    var d = (PRI[b.pri] || 0) - (PRI[a.pri] || 0);
+    return d !== 0 ? d : a.id - b.id;
+  }
+  function ddlText(t) {
+    if (!t.ddl) return '无截止';
+    var d = new Date(t.ddl + 'T00:00:00');
+    var m = d.getMonth() + 1, day = d.getDate();
+    if (t.ddl === TODAY) return '今天 ' + m + '/' + day;
+    if (t.ddl === addDays(1)) return '明天 ' + m + '/' + day;
+    return m + '/' + day;
+  }
+
+  // ---------- 渲染 ----------
+  function taskRow(t, opts) {
+    opts = opts || {};
+    var u = urgency(t);
+    var chips = '<span class="chip type-' + esc(t.type) + '">' + esc(t.type) + '</span>';
+    if (t.course && !root.classList.contains('no-student')) {
+      chips += '<span class="chip">' + esc(t.course) + '</span>';
+    }
+    if (t.pri !== '无') chips += '<span class="chip pri-' + esc(t.pri) + '">' + esc(t.pri) + '优先</span>';
+    var ddlChip = t.done ? '' :
+      '<span class="chip urg-' + u + '">' + (u === 'overdue' ? '已逾期 · ' : '') + esc(ddlText(t)) +
+      (u !== 'overdue' && u !== 'none' ? ' · ' + URGLABEL[u] : '') + '</span>';
+    var act = (!t.done && u === 'overdue' && opts.relocate !== false)
+      ? '<button class="btn-mini" data-relocate="' + t.id + '">改期到今天</button>' : '';
+    return '<div class="task' + (t.done ? ' done' : '') + '">' +
+      '<span class="ck" data-toggle="' + t.id + '" role="checkbox" aria-checked="' + t.done + '"></span>' +
+      '<div class="t-main"><div class="t-title">' + esc(t.title) + '</div>' +
+      '<div class="t-meta">' + ddlChip + chips + '</div></div>' + act + '</div>';
+  }
+
+  function renderToday() {
+    // 考试倒计时 FR-14
+    var exams = tasks.filter(function (t) {
+      return t.type === '考试' && !t.done && t.ddl && t.ddl >= TODAY;
+    }).sort(function (a, b) { return a.ddl < b.ddl ? -1 : 1; });
+    var card = $('#d-count-card');
+    if (exams.length) {
+      var e = exams[0];
+      var days = Math.round((new Date(e.ddl + 'T00:00:00') - new Date(TODAY + 'T00:00:00')) / 86400000);
+      $('#d-exam-name').textContent = '《' + e.title + '》';
+      $('#d-exam-days').innerHTML = (days === 0 ? '今天' : days) + '<small>天</small>';
+      card.style.background = days <= 7
+        ? 'linear-gradient(135deg,#B3261E,#D93025)' : 'linear-gradient(135deg,#0B8457,#0E9A66)';
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
+    }
+    // 逾期区
+    var overdue = tasks.filter(function (t) { return urgency(t) === 'overdue'; });
+    var box = $('#d-today-overdue');
+    box.innerHTML = overdue.length
+      ? '<div class="sec-title" style="color:#B3261E">已逾期 <span class="cnt">' + overdue.length + '</span></div>' +
+        overdue.map(function (t) { return taskRow(t); }).join('')
+      : '';
+    // 今日任务
+    var todayList = tasks.filter(function (t) { return !t.done && t.ddl === TODAY; })
+      .sort(byR2);
+    $('#d-today-cnt').textContent = todayList.length;
+    $('#d-today-list').innerHTML = todayList.length
+      ? todayList.map(function (t) { return taskRow(t); }).join('')
+      : '<div class="empty"><span class="big">🌤️</span>今天没有安排<br>用下方输入框添加第一件事</div>';
+  }
+
+  function renderTasks() {
+    var groups = [
+      { key: 'overdue', label: '已逾期', cls: 'u-overdue' },
+      { key: 'today', label: '今天', cls: 'u-today' },
+      { key: 'soonweek', label: '未来 7 天', cls: 'u-soon' },
+      { key: 'later', label: '更晚', cls: 'u-later' },
+      { key: 'none', label: '无日期', cls: 'u-later' }
+    ];
+    var byU = { overdue: [], today: [], soon: [], week: [], later: [], none: [] };
+    tasks.filter(function (t) { return !t.done; }).forEach(function (t) {
+      byU[urgency(t)].push(t);
+    });
+    byU.soonweek = byU.soon.concat(byU.week).sort(byR2);
+    var html = '';
+    groups.forEach(function (g) {
+      var list = byU[g.key];
+      if (!list.length) return;
+      html += '<div class="sec-title"><span class="urg ' + g.cls + '">' + g.label + '</span>' +
+        '<span class="cnt">' + list.length + '</span></div>' +
+        list.map(function (t) { return taskRow(t); }).join('');
+    });
+    if (!html) html = '<div class="empty"><span class="big">🎉</span>所有任务都完成了</div>';
+    $('#d-task-sections').innerHTML = html;
+    var done = tasks.filter(function (t) { return t.done; });
+    $('#d-done-cnt').textContent = done.length;
+    $('#d-done-list').innerHTML = done.map(function (t) { return taskRow(t, { relocate: false }); }).join('');
+  }
+
+  function renderCourses() {
+    $('#d-course-list').innerHTML = courses.map(function (c) {
+      var n = tasks.filter(function (t) { return t.course === c.name && !t.done; }).length;
+      return '<div class="card course-card"><div><div class="c-name">' + esc(c.name) + '</div>' +
+        '<div class="c-sub">' + esc(c.teacher || '未填教师') + ' · ' + esc(c.room || '未填地点') + '</div></div>' +
+        '<div class="c-num"><b>' + n + '</b><span>未完成</span></div></div>';
+    }).join('');
+  }
+
+  function renderAll() { renderToday(); renderTasks(); renderCourses(); }
+
+  // ---------- Tab 切换 ----------
+  function switchTab(view) {
+    $all('.tab[data-view]').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-view') === view);
+    });
+    ['d-view-today', 'd-view-tasks', 'd-view-courses', 'd-view-me'].forEach(function (id) {
+      document.getElementById(id).style.display = id === view ? '' : 'none';
+    });
+    root.querySelector('.d-body').scrollTop = 0;
+  }
+  $all('.tab[data-view]').forEach(function (el) {
+    el.addEventListener('click', function () { switchTab(el.getAttribute('data-view')); });
+  });
+
+  // ---------- 事件委托 ----------
+  root.addEventListener('click', function (ev) {
+    var tg = ev.target.closest ? ev.target.closest('[data-toggle],[data-relocate]') : null;
+    if (tg) {
+      var id = Number(tg.getAttribute('data-toggle') || tg.getAttribute('data-relocate'));
+      var t = tasks.find(function (x) { return x.id === id; });
+      if (!t) return;
+      if (tg.hasAttribute('data-toggle')) {
+        t.done = !t.done;
+        toast(t.done ? '已完成「' + cut(t.title) + '」' : '已撤销完成');
+      } else {
+        t.ddl = TODAY;
+        toast('已改期到今天');
+      }
+      renderAll();
+      return;
+    }
+    if (ev.target.closest('#d-quick-btn')) quickAdd();
+    if (ev.target.closest('#d-open-add')) openAdd(true);
+    if (ev.target.closest('#d-close-add')) openAdd(false);
+    if (ev.target.closest('#d-f-save')) saveForm();
+  });
+  root.addEventListener('change', function (ev) {
+    if (ev.target.id === 'd-mode-toggle') {
+      root.classList.toggle('no-student', !ev.target.checked);
+      if (!ev.target.checked) switchTab('d-view-today');
+      renderAll();
+      toast(ev.target.checked ? '学生模式已开启' : '学生模式已关闭（数据保留）');
+    }
+  });
+  $('#d-quick-input').addEventListener('keydown', function (e) { if (e.key === 'Enter') quickAdd(); });
+
+  function cut(s) { return s.length > 8 ? s.slice(0, 8) + '…' : s; }
+
+  // ---------- 快捷添加（FR-06）----------
+  function quickAdd() {
+    var input = $('#d-quick-input');
+    var v = input.value.trim();
+    if (!v) { input.focus(); return; }
+    tasks.push({ id: ++seq, title: v, type: '普通', course: '', ddl: TODAY, pri: '无', done: false });
+    input.value = '';
+    renderAll();
+    toast('已添加到今天');
+  }
+
+  // ---------- 新建面板（FR-01）----------
+  function openAdd(open) {
+    $('#d-add-panel').classList.toggle('open', open);
+    if (open) {
+      $('#d-f-title').value = '';
+      $('#d-f-err').style.display = 'none';
+      $('#d-f-ddl').value = '';
+      var sel = $('#d-f-course');
+      sel.innerHTML = '<option value="">不绑定课程</option>' + courses.map(function (c) {
+        return '<option>' + esc(c.name) + '</option>';
+      }).join('');
+      setTimeout(function () { $('#d-f-title').focus(); }, 240);
+    }
+  }
+  function saveForm() {
+    var title = $('#d-f-title').value.trim();
+    if (!title) { $('#d-f-err').style.display = 'block'; $('#d-f-title').focus(); return; }
+    var type = $('#d-f-type').value;
+    var course = (type === '作业' || type === '考试') ? $('#d-f-course').value : '';
+    tasks.push({
+      id: ++seq, title: title, type: type, course: course,
+      ddl: $('#d-f-ddl').value || '', pri: $('#d-f-pri').value, done: false
+    });
+    openAdd(false);
+    renderAll();
+    switchTab('d-view-tasks');
+    toast('已添加「' + cut(title) + '」');
+  }
+
+  // ---------- Toast ----------
+  var toastTimer = null;
+  function toast(msg) {
+    var el = $('#d-toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove('show'); }, 1600);
+  }
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
